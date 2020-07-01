@@ -2,10 +2,10 @@ import pygame
 import random
 from math import sqrt
 
-
 class Spot(pygame.sprite.Sprite):
 
     def __init__(self, i, j, width, height, rows, cols):
+        """Khởi tạo thuộc tính cho các điểm trên mô phỏng"""
         super(Spot, self).__init__()
         self.rect = pygame.Rect(i * width, j * height, width - 2, height - 2)
         self.BLUE = (0, 0, 255)
@@ -22,14 +22,19 @@ class Spot(pygame.sprite.Sprite):
         self.previous = None
         self.wall = False
 
-        if random.random() < 0.3:
+        if random.random() < 0.4:
             self.wall = True
 
     def show(self, screen, col):
+        """Hiển thị các điểm đang xét trên màn hình mô phỏng
+        xanh dương ~ điểm bắt đầu
+        hồng ~ điểm kết thúc
+        đen ~ tường  
+        """
         if self.i == 0 and self.j == 0:
-            col = (0, 255, 0)
+            col = (0, 255, 255)
         if self.i == self.rows - 1 and self.j == self.cols - 1:
-            col = (255, 0, 0)
+            col = (255, 0, 255)
         if self.wall:
             col = (0, 0, 0)
         pygame.draw.rect(screen, col,
@@ -59,6 +64,8 @@ class Spot(pygame.sprite.Sprite):
                 self.neighbors.append(grid[i - 1][j + 1])
             if i < self.cols - 1 and j < self.rows - 1:
                 self.neighbors.append(grid[i + 1][j + 1])
+
+    """Hàm trả về đường đi lý tưởng nhất và tối ưu (ngắn nhất)"""
 
     @staticmethod
     def heuristic(spot1, spot2):

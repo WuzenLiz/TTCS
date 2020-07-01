@@ -5,7 +5,7 @@ from Spot import Spot
 from Button import Button
 
 
-def current_milli_time(): return int(round(time.time() * 1000))
+def current_milli_time(): return int(round(time.time()))
 
 
 pygame.init()
@@ -16,12 +16,13 @@ width_tot = width + 200
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
+pathway = (69, 69, 255)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
 WINDOW_SIZE = [width_tot, height]
 screen = pygame.display.set_mode(WINDOW_SIZE)
-pygame.display.set_caption("Maze")
+pygame.display.set_caption("Mo phong thuat toan A*")
 
 done = False
 clock = pygame.time.Clock()
@@ -31,6 +32,7 @@ cols = rows = 50
 
 allow_diagonals = True
 show_visited = False
+show_path = False
 
 grid = []
 openSet = []
@@ -76,16 +78,18 @@ def clear_grid():
             grid[i][j].wall = False
     openSet = []
     closedSet = []
+    show_path = False
 
 
 def randomize_grid():
+    """Tạo ngẫu nhiên tường trong grid"""
     clear_grid()
     for i in range(rows):
         for j in range(cols):
             if random.random() < 0.4:
                 grid[i][j].wall = True
-    grid[0][0].wall = False
-    grid[rows - 1][cols - 1].wall = False
+    grid[0][0].wall = False #Xử lý nếu điểm khởi đầu bị đặt thành tường #Log_code_dev: 25/6/2020
+    grid[rows - 1][cols - 1].wall = False  #Xử lý nếu điểm kết thúc bị đặt thành tường #Log_code_dev: 25/6/2020
 
 
 start_enable = False
@@ -142,6 +146,7 @@ while not done:
             if start_path.rect.collidepoint(pos) > 0:
                 time_start = current_milli_time()
                 hold = False
+                show_path = True
                 show_visited = True
                 start_grid()
 
@@ -164,8 +169,8 @@ while not done:
             current = openSet[0]
 
             if current == end:
-                print('Done in ', (current_milli_time() -
-                                   time_start), ' milliseconds!')
+                print('Tìm thấy đường đi khỏi mê cung trong trong ', (current_milli_time() -
+                                   time_start), ' giây!')
                 hold = True
                 start_enable_rec = False
                 saved_path = path
@@ -182,7 +187,7 @@ while not done:
                     neighbor.previous = current
             closedSet.append(current)
         else:
-            print('No solution')
+            print('Không có lời giải!')
             pygame.event.wait()
             break
 
@@ -196,8 +201,8 @@ while not done:
             current = openSet[winner]
 
             if current == end:
-                print('Done in ', (current_milli_time() -
-                                   time_start), ' milliseconds!')
+                print('Tìm thấy đường đi khỏi mê cung trong trong ', (current_milli_time() -
+                                   time_start), ' giây!')
                 hold = True
                 start_enable = False
                 saved_path = path
@@ -225,7 +230,7 @@ while not done:
                         neighbor.f = neighbor.g + neighbor.h
                         neighbor.previous = current
         else:
-            print('No solution')
+            print('Không có lời giải!')
             pygame.event.wait()
             break
 
@@ -239,6 +244,13 @@ while not done:
     for i in range(cols):
         for j in range(rows):
             grid[i][j].show(screen, WHITE)
+
+    if show_visited:
+        for i in range(len(closedSet)):
+            closedSet[i].show(screen, RED)
+
+        for i in range(len(openSet)):
+            openSet[i].show(screen, GREEN)
 
     if start_enable_rec or start_enable:
         # Find path
@@ -255,13 +267,6 @@ while not done:
     else:
         for i in range(len(saved_path)):
             saved_path[i].show(screen, BLUE)
-
-    if show_visited:
-        for i in range(len(closedSet)):
-            closedSet[i].show(screen, RED)
-
-        for i in range(len(openSet)):
-            openSet[i].show(screen, GREEN)
 
     # clock.tick(60)
     pygame.display.flip()
