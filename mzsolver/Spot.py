@@ -19,8 +19,8 @@ class Spot(pygame.sprite.Sprite):
         self.neighbors = []
         self.previous = None
         self.wall = False
-        if random.random() < 0.4:
-            self.wall = True
+        # if random.random() < 0.4:
+        #     self.wall = True
 
     def show(self, screen, col):
         """Hiển thị các điểm đang xét trên màn hình mô phỏng

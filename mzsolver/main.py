@@ -33,7 +33,6 @@ cols = rows = 50
 
 allow_diagonals = True
 show_visited = False
-show_path = False
 
 grid = []
 openSet = []
@@ -113,7 +112,7 @@ def start_general():
 
 def start_grid():
     start_general()
-    
+
     global start_enable
     start_enable = True
 
@@ -148,7 +147,6 @@ while not done:
             if start_path.rect.collidepoint(pos) > 0:
                 time_start = current_milli_time()
                 hold = False
-                show_path = True
                 show_visited = True
                 start_grid()
 
