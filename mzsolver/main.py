@@ -19,6 +19,7 @@ RED = (255, 0, 0)
 pathway = (69, 69, 255)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+BUTTON_Algo = (163, 96, 185)
 
 WINDOW_SIZE = [width_tot, height]
 screen = pygame.display.set_mode(WINDOW_SIZE)
@@ -27,7 +28,7 @@ pygame.display.set_caption("Mo phong thuat toan A*")
 done = False
 clock = pygame.time.Clock()
 
-# Setup
+# Thiết lập và vẽ lưới mô phỏng
 cols = rows = 50
 
 allow_diagonals = True
@@ -60,12 +61,12 @@ end = grid[cols - 1][rows - 1]
 start.wall = False
 end.wall = False
 
-# Show buttons
-randomize = Button(width + 25, 30 + 0 * 55, 150, 50, 'Random',     (255, 0, 0))
-clear = Button(width + 25, 30 + 1 * 55, 150, 50, 'Clear',      (0, 0, 255))
-start = Button(width + 25, 30 + 3 * 55, 150, 50, 'A*',         (255, 5, 250))
+# Hiển thị các nút
+randomize = Button(width + 25, 30 + 0 * 55, 150, 50, 'Random',RED)
+clear = Button(width + 25, 30 + 1 * 55, 150, 50, 'Clear',BLUE)
+start = Button(width + 25, 30 + 3 * 55, 150, 50, 'A*',BUTTON_Algo)
 start_path = Button(width + 25, 30 + 4 * 55, 150,
-                    50, 'A* + PATH',  (255, 5, 250))
+                    50, 'A* + PATH',  BUTTON_Algo)
 
 
 def clear_grid():
@@ -112,6 +113,7 @@ def start_general():
 
 def start_grid():
     start_general()
+    
     global start_enable
     start_enable = True
 
