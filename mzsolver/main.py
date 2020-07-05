@@ -240,6 +240,12 @@ while not done:
         for j in range(rows):
             grid[i][j].show(screen, WHITE)
 
+    if show_visited:
+        for i in range(len(closedSet)):
+            closedSet[i].show(screen, RED)
+
+        for i in range(len(openSet)):
+            openSet[i].show(screen, GREEN)
     if start_enable_rec or start_enable:
         # Find path
         path = []
@@ -255,14 +261,6 @@ while not done:
     else:
         for i in range(len(saved_path)):
             saved_path[i].show(screen, BLUE)
-
-    if show_visited:
-        for i in range(len(closedSet)):
-            closedSet[i].show(screen, RED)
-
-        for i in range(len(openSet)):
-            openSet[i].show(screen, GREEN)
-
     # clock.tick(60)
     pygame.display.flip()
 
